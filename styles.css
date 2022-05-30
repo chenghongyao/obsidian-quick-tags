@@ -1,0 +1,90 @@
+
+.qt-array-input-container {
+    width: 100%;
+    min-height: 25pt;
+
+    background: var(--background-modifier-form-field);
+    color: var(--text-normal);
+
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+
+    font-size: 16px;
+
+    padding: 3px 4px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.qt-array-input {
+    
+    height: fit-content;
+    white-space: nowrap;
+    display: inline;
+    margin: 2px 2px;
+
+    flex: 1;
+}
+
+
+.qt-array-item {
+    /* height: fit-content;
+    width: fit-content; */
+    /* display: inline-block; */
+    padding: 0px 4px;
+    background-color:gray;
+    border-radius: 3px;
+
+    margin: 0px 2px;
+    /* vertical-align: middle; */
+}
+.qt-array-item-content,
+.qt-array-item-icon {
+    display: inline;
+    margin: 1px 3px;
+}
+
+.qt-array-item-content:hover {
+    color: white;
+}
+.qt-array-item-icon {
+    width: 1.5px;
+    height: 8px;
+    background-color: rgb(196, 196, 196);
+    transform: rotate(45deg);
+    display: inline-block;
+    margin-left: 2px;
+}
+
+.qt-array-item-icon::after {
+    content: '';
+    display: block;
+    width: 1.5px;
+    height: 8px;
+    background-color: rgb(196, 196, 196);
+    transform: rotate(-90deg);
+}
+
+.qt-array-item-icon:hover,
+.qt-array-item-icon:hover::after
+{
+    background-color: white;
+}
+
+
+
+
+
+.
+
+/* .qt-tag-input {
+    background-color: var(--text-accent);
+    padding: 0px 6px 0px 5px;
+    border-radius: 4%;
+    margin: 0 1.5px;
+    height: fit-content;
+    white-space: nowrap;
+} */
