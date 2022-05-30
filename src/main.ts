@@ -49,6 +49,24 @@ class TagsSuggestModal extends Modal {
 
 	}
 
+	private addTag(text: string) {
+		if (text) {
+			for (var i = 0; i < this.tagItems.length; i++) {
+				if (this.tagItems[i].textContent === text) {
+					text = null;
+					new Notice("标签重复",500);
+					break;
+				}
+			}
+
+			if (text) {
+				this.addTagItem(text);
+				this.modified = true;
+				this.tagInput.textContent = "";
+			}
+		}
+	}
+
 	private createTagInput() {
 		this.tagInput = this.tagInputContainer.createDiv("qt-array-input");
 		this.tagInput.contentEditable = "true";
@@ -65,29 +83,15 @@ class TagsSuggestModal extends Modal {
 
 		this.tagInput.onkeypress = (ev) => {
 
+			const text = this.tagInput.textContent.trim();
 			if (ev.key === 'Enter') {
+				this.addTag(text);
 				this.close();
 				return false;
 			}
 
 			if (ev.key === ' ') {
-				var text = this.tagInput.textContent.trim();
-				if (text) {
-					for (var i = 0; i < this.tagItems.length; i++) {
-						if (this.tagItems[i].textContent === text) {
-							text = null;
-							new Notice("标签重复",500);
-							break;
-						}
-					}
-
-					if (text) {
-						this.addTagItem(text);
-						this.modified = true;
-						this.tagInput.textContent = "";
-					}
-				}
-
+				this.addTag(text);
 				return false;
 			}
 
