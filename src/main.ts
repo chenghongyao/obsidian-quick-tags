@@ -16,6 +16,9 @@ class TagsSuggestModal extends Modal {
 	onclose: (tags: Array<string>) => void;
 	modified: boolean;
 
+
+
+
 	constructor(app: App, plugin: QuickTagsPlugin,title: string, tags: Array<string>, onclose: (tags: Array<string>)=>void) {
 		super(app);
 		this.tags = tags
@@ -24,6 +27,8 @@ class TagsSuggestModal extends Modal {
 		this.tagItems = [];
 		this.onclose = onclose;
 		this.modified = false;
+
+		
 	}
 
 
@@ -104,7 +109,7 @@ class TagsSuggestModal extends Modal {
 
 	onOpen(): void {
 		
-		console.log(this.title);
+		// console.log(this.title);
 		// this.contentEl.createEl("h2").textContent = this.title;
 
 		this.tagInputContainer = this.contentEl.createDiv("qt-array-input-container");
@@ -130,7 +135,9 @@ class TagsSuggestModal extends Modal {
 
 export default class QuickTagsPlugin extends Plugin {
 
-	async modifyFileTags(file: TFile,tags: Array<string>) {
+	fileTocMap: Map<TFile,any> = new Map();
+
+	private async modifyFileTags(file: TFile,tags: Array<string>) {
 		return this.app.vault.cachedRead(file).then((content) => {
 			const rYaml = /^(---\r?\n[\s\S]*\r?\n)---/;
 			const rTags = /tags:(.*)\r?\n((?:- .*)\r?\n)*/g;
@@ -156,7 +163,28 @@ export default class QuickTagsPlugin extends Plugin {
 			return this.app.vault.modify(file,content);
 		});
 	}
+
+	private async fetchAllTags() {
+		const allTags = new Set<string>()
+		this.app.vault.getMarkdownFiles().map((file) => {
+
+			const frontmatter = this.app.metadataCache.getFileCache(file)?.frontmatter;
+			var tags: Array<string> = frontmatter?.tags || frontmatter?.tag || [];
+
+			if (typeof tags === "string") {
+				tags = (tags as string).split(",").map((t) => t.trim());
+			}
+			tags.map((t) => allTags.add(t));
+
+		});
+		return Array.from(allTags);
+	}
+
 	async onload() {
+		this.fetchAllTags().then((allTags) => {
+			// console.log(allTags);
+
+		})
 
 		this.addCommand({
 			id: 'update-tags-in-current-file',
@@ -183,7 +211,9 @@ export default class QuickTagsPlugin extends Plugin {
 
 
 			}
-		})
+		});
+
+
 	}
 
 	onunload() {
